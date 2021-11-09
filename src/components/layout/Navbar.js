@@ -1,13 +1,13 @@
-import React, { Fragment, useState, useEffect  } from 'react';
-import { Link,Redirect } from 'react-router-dom';
+import React, { Fragment, useState, useEffect } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login, logout } from '../../actions/auth';
 
-import Button from '@material-ui/core/Button';
-import { 
+import { Box, Button, Typography } from '@material-ui/core';
+import {
   connectWallet,
-  getCurrentWalletConnected 
+  getCurrentWalletConnected
 } from "../../utils/interact.js";
 // import Alert from '@mui/material/Alert';
 // import AlertTitle from '@mui/material/AlertTitle';
@@ -19,7 +19,7 @@ const Navbar = ({ auth: { isAuthenticated }, login, logout }) => {
   const [walletAddress, setWallet] = useState("");
 
   useEffect(async () => { //TODO: implement
-    const {address} = await getCurrentWalletConnected();
+    const { address } = await getCurrentWalletConnected();
     setWallet(address);
   }, []);
 
@@ -29,9 +29,9 @@ const Navbar = ({ auth: { isAuthenticated }, login, logout }) => {
 
     addWalletListener();
 
-    if(walletResponse.success){
-      login(walletResponse.address);
-    }
+    // if (walletResponse.success) {
+    //   login(walletResponse.address);
+    // }
   };
 
   function addWalletListener() {
@@ -57,44 +57,69 @@ const Navbar = ({ auth: { isAuthenticated }, login, logout }) => {
     }
   }
 
-  if (isAuthenticated) {
-    return <Redirect to="/play" />;
-  }
-
   const authLinks = (
     <ul>
-      <li>
-        <Link to="/play">Play</Link>
-      </li>
-      <li>
-        <Button variant="outlined" component="span"  onClick={connectWalletPressed} style={{
-          borderColor: 'white',
-          color: 'white'
-        }}>
-          {walletAddress.length > 0 ? (
-            "Connected: " +
-            String(walletAddress).substring(0, 6) +
-            "..." +
-            String(walletAddress).substring(38)
-          ) : (
-            <span>Connect Wallet</span>
-          )}
-        </Button>
-      </li>
-      <li>
-        <a onClick={logout} href="#!">
-          <i className="fas fa-sign-out-alt" />{' '}
-          <span className="hide-sm">Logout</span>
-        </a>
-      </li>
+      <Button variant="text" style={{
+        color: 'white',
+        marginRight: '3px',
+        fontSize: '86',
+        fontWeight: 'bold',
+        backgroundColor: 'rgba(255, 255, 255, 0.15)'
+      }}>
+        Games
+      </Button>
+      <Button onClick={connectWalletPressed} variant="text" style={{
+        color: 'white',
+        marginRight: '3px',
+        fontSize: '86',
+        fontWeight: 'bold',
+        backgroundColor: 'rgba(255, 255, 255, 0.15)'
+      }}>
+        {walletAddress.length > 0 ? (
+          "Connected: " +
+          String(walletAddress).substring(0, 6) +
+          "..." +
+          String(walletAddress).substring(38)
+        ) : (
+          <span>Connect Wallet</span>
+        )}
+      </Button>
     </ul>
   );
 
   const guestLinks = (
     <ul>
-      <Button variant="outlined" component="span"  onClick={connectWalletPressed} style={{
-        borderColor: 'white',
-        color: 'white'
+      {walletAddress.length > 0 ?
+        <Button variant="text" style={{
+          color: 'white',
+          marginRight: '3px',
+          fontSize: '86',
+          fontWeight: 'bold',
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          fontFamily: 'Helvetica-Bold,AdobeInvisFont,MyriadPro-Regular'
+        }}>
+          Games
+        </Button> :
+        <Button variant="text" style={{
+          color: 'white',
+          marginRight: '3px',
+          fontSize: '86',
+          fontWeight: 'bold',
+          backgroundColor: 'rgba(255, 255, 255, 0.1)',
+          fontFamily: 'Helvetica-Bold,AdobeInvisFont,MyriadPro-Regular',
+          width: '152.6px'
+        }}>
+          Games
+        </Button>
+      }
+      <Button onClick={connectWalletPressed} variant="text" style={{
+        color: 'white',
+        marginRight: '3px',
+        fontSize: '86',
+        fontWeight: 'bold',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        fontFamily: 'Helvetica-Bold,AdobeInvisFont,MyriadPro-Regular',
+        width: {}
       }}>
         {walletAddress.length > 0 ? (
           "Connected: " +
@@ -109,10 +134,16 @@ const Navbar = ({ auth: { isAuthenticated }, login, logout }) => {
   );
 
   return (
-    <nav className="navbar bg-dark">
-        <Link to='/'>
-          <img src="/logo.png" alt="logo" style={{width: '50px', height: '50px'}} />
-        </Link>
+    <nav className="navbar">
+      <Link to='/'>
+        <img src="/assets/logo.png" alt="logo" style={{ width: '40px', height: '20px' }} />
+      </Link>
+      <Typography style={{ color: '#ffffff', fontSize: '34px', fontWeight: 'bold', fontFamily: 'Helvetica-Bold,AdobeInvisFont,MyriadPro-Regular' }}>
+        Smart Games
+      </Typography>
+      <Typography style={{ color: '#ffffff', fontSize: '16px', marginTop: '10px', fontFamily: 'ErasITC-Light,AdobeInvisFont,MyriadPro-Regular' }}>
+        Provable fair games that is entirely based on smart contract with low 1% transaction fees, no sign ups & deposits.
+      </Typography>
       <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
     </nav>
   );
