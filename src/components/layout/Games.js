@@ -16,14 +16,14 @@ const Landing = ({ isAuthenticated }) => {
           <Typography sx={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Helvetica-Bold,AdobeInvisFont,MyriadPro-Regular' }}>
             Smart Coin Flip
           </Typography>
-          <Button size="small" href="/play" sx={{padding: 0, backgroundColor: '#F4ADAB', fontSize: '20px', fontWeight: 'bold', fontFamily: 'Helvetica-Bold,AdobeInvisFont,MyriadPro-Regular', fontColor: '#B52F1B'}}> Play Now </Button>
+          <Button size="small" href="/flip" sx={{padding: 0, backgroundColor: '#F4ADAB', fontSize: '20px', fontWeight: 'bold', fontFamily: 'Helvetica-Bold,AdobeInvisFont,MyriadPro-Regular', fontColor: '#B52F1B'}}> Play Now </Button>
         </Stack>
         <Stack spacing={1}>
           <img src="/assets/dice.png" alt="smart-game" style={{height: '150px',}} />
           <Typography sx={{ fontSize: '20px', fontWeight: 'bold', fontFamily: 'Helvetica-Bold,AdobeInvisFont,MyriadPro-Regular' }}>
             Smart Dice
           </Typography>
-          <Button size="small" sx={{padding: 0, backgroundColor: '#F4ADAB', fontSize: '20px', fontWeight: 'bold', fontFamily: 'Helvetica-Bold,AdobeInvisFont,MyriadPro-Regular', fontColor: '#B52F1B'}}> Play Now </Button>
+          <Button size="small" href="/dice" sx={{padding: 0, backgroundColor: '#F4ADAB', fontSize: '20px', fontWeight: 'bold', fontFamily: 'Helvetica-Bold,AdobeInvisFont,MyriadPro-Regular', fontColor: '#B52F1B'}}> Play Now </Button>
         </Stack>
         <Stack spacing={1}>
           <img src="/assets/raffle.png" alt="smart-game" style={{height: '150px',}} />
