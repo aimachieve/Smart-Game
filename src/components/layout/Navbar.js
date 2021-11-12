@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { login, logout } from '../../actions/auth'
 import { useTheme } from '@material-ui/core/styles'
-import { Button, Typography, useMediaQuery } from '@material-ui/core'
+import { Button, Typography, useMediaQuery, Stack } from '@mui/material'
 import {
   connectWallet,
   getCurrentWalletConnected,
@@ -202,11 +202,12 @@ const Navbar = ({ auth: { isAuthenticated }, login, logout }) => {
   } else {
     return (
       <nav className="navbar">
+        <Stack direction="row">
         <Link to="/">
           <img
             src="/assets/logo.png"
             alt="logo"
-            style={{ width: '40px', height: '20px' }}
+            style={{ width: '40px', height: '20px', marginTop: '15px' }}
           />
         </Link>
         <Link to="/">
@@ -221,6 +222,7 @@ const Navbar = ({ auth: { isAuthenticated }, login, logout }) => {
             Smart Games
           </Typography>
         </Link>
+        </Stack>
         <Fragment>{isAuthenticated ? authLinks : guestLinks}</Fragment>
       </nav>
     )

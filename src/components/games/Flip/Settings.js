@@ -49,7 +49,8 @@ const Setting = ({ isAuthenticated }) => {
       padding: theme.spacing(1),
     },
     '& .MuiPaper-root': {
-      background: '-webkit-linear-gradient(-90deg, #ffda6f 30%, #e2a139 90%)',
+      // background: '-webkit-linear-gradient(-90deg, #ffda6f 30%, #e2a139 90%)',
+      background: 'rgba(255, 255, 255, 0.7)'
     },
   }))
 
@@ -85,7 +86,7 @@ const Setting = ({ isAuthenticated }) => {
   return (
     <Fragment>
       <Stack direction="row" justifyContent={isDesktop ? 'flex-end' : 'center'}>
-        <Box mt={isDesktop ? 5 : 10}>
+        <Box mt={3}>
           {/* Open Rule Modal */}
           <IconButton
             onClick={handleClickOpen}
@@ -109,7 +110,7 @@ const Setting = ({ isAuthenticated }) => {
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
-        sx={{ width: '450px', margin: 'auto' }}
+        sx={{ width: isDesktop ? '450px' : '350px', margin: 'auto', marginTop: isDesktop ? '' : '100px' }}
       >
         <BootstrapDialogTitle
           id="customized-dialog-title"

@@ -118,7 +118,7 @@ const Flip = ({ isAuthenticated, login }) => {
       fontSize: '20px !important',
       textAlign: 'center',
       background:
-        '-webkit-linear-gradient(#ffda6f 15%, #e2a139 60%, #a44e01 80%)',
+        '-webkit-linear-gradient( #ffda6f 15%, #e2a139 60%, #a44e01 80%)',
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: 'transparent',
     },
@@ -129,7 +129,7 @@ const Flip = ({ isAuthenticated, login }) => {
       fontSize: '20px !important',
       textAlign: 'center',
       background:
-        '-webkit-linear-gradient(#a44e01 15%, #e2a139 60%, #ffda6f 80%)',
+        '-webkit-linear-gradient( #a44e01 15%, #e2a139 60%, #ffda6f 80%)',
       WebkitBackgroundClip: 'text',
       WebkitTextFillColor: 'transparent',
     },
@@ -139,10 +139,10 @@ const Flip = ({ isAuthenticated, login }) => {
   const useStyles = makeStyles({
     root: {
       '& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline': {
-        borderColor: 'white',
+        borderColor: '#ffda6f',
       },
       '& .MuiOutlinedInput-input': {
-        color: 'white',
+        color: '#e2a139',
       },
       width: '400px',
     },
@@ -162,10 +162,8 @@ const Flip = ({ isAuthenticated, login }) => {
 
     if (selected === currentType) {
       setIsWin(1)
-      console.log('win')
     } else {
       setIsWin(0)
-      console.log('lose')
     }
     handleClickOpen()
   }
@@ -202,7 +200,7 @@ const Flip = ({ isAuthenticated, login }) => {
               <Container maxWidth="sm">
                 <Stack
                   direction="row"
-                  mt={6}
+                  mt={5}
                   justifyContent={isDesktop ? 'space-between' : 'center'}
                   flexWrap="wrap"
                   sx={{ width: '100%' }}
@@ -295,20 +293,43 @@ const Flip = ({ isAuthenticated, login }) => {
               </Container>
 
               {/* Set Bet Amount */}
-              <Box mt={3}>
-                <Typography sx={{ color: '#fff', mb: 2 }}>
-                  Bet Amount
-                </Typography>
-                <TextField
-                  id="bet-amount"
-                  type="number"
-                  value={betAmount}
-                  className={classes.root}
-                  onChange={handleChange}
-                  InputProps={{ endAdornment: <MinButton /> }}
-                  fullWidth
-                />
-              </Box>
+              <Grid
+                item
+                container
+                xs={12}
+                md={12}
+                justifyContent="center"
+                mt={3}
+              >
+                <Grid
+                  item
+                  container
+                  xs={12}
+                  md={12}
+                  justifyContent="center"
+                  mt={3}
+                >
+                  <HeadColor>Bet Amount</HeadColor>
+                </Grid>
+                <Grid
+                  item
+                  container
+                  xs={12}
+                  md={12}
+                  justifyContent="center"
+                  mt={3}
+                >
+                  <TextField
+                    id="bet-amount"
+                    type="number"
+                    value={betAmount}
+                    className={classes.root}
+                    onChange={handleChange}
+                    InputProps={{ endAdornment: <MinButton /> }}
+                    fullWidth
+                  />
+                </Grid>
+              </Grid>
 
               {/* Connect Wallet and Start Betting */}
               <Grid
@@ -316,7 +337,8 @@ const Flip = ({ isAuthenticated, login }) => {
                 container
                 xs={12}
                 md={12}
-                style={{ display: 'flex', justifyContent: 'center' }}
+                justifyContent="center"
+                mb={3}
               >
                 {walletAddress.length > 0 || isAuthenticated ? (
                   <Button
@@ -331,7 +353,11 @@ const Flip = ({ isAuthenticated, login }) => {
                       borderRadius: '10px',
                       fontWight: 'bold',
                       background:
-                        'linear-gradient(90deg , #dc2424 15%, #4a569d 80%)',
+                        'linear-gradient(120deg , #dc2424 15%, #4a569d 80%)',
+                      '&:hover': {
+                        background:
+                          'linear-gradient(120deg , #4a569d 15%, #dc2424 80%)'
+                      }
                     }}
                   >
                     {' '}
@@ -349,7 +375,11 @@ const Flip = ({ isAuthenticated, login }) => {
                       borderRadius: '10px',
                       fontWight: 'bold',
                       background:
-                        'linear-gradient(90deg , #dc2424 15%, #4a569d 80%)',
+                        'linear-gradient(120deg , #dc2424 15%, #4a569d 80%)',
+                      '&:hover': {
+                        background:
+                          'linear-gradient(120deg , #4a569d 15%, #dc2424 80%)'
+                      }
                     }}
                   >
                     {' '}

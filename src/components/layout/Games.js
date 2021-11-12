@@ -18,7 +18,6 @@ const Landing = ({ isAuthenticated }) => {
             fontSize: '34px',
             fontWeight: 'bold',
             width: '100%',
-            mb: 2,
           }}
         >
           Games
@@ -28,9 +27,8 @@ const Landing = ({ isAuthenticated }) => {
           justifyContent={isDesktop ? 'space-between' : 'center'}
           alignItems="bottom"
           flexWrap="wrap"
-          spacing={2}
         >
-          <Stack spacing={1}>
+          <Stack spacing={1} sx={{ m: 1 }}>
             <img
               src="/assets/coin-flip-white.png"
               alt="smart-game"
@@ -59,14 +57,14 @@ const Landing = ({ isAuthenticated }) => {
                 fontWeight: 'bold',
                 fontFamily: 'Helvetica-Bold,AdobeInvisFont,MyriadPro-Regular',
                 fontColor: '#B52F1B',
-                marginBottom: 10,
+                mb: 10,
               }}
             >
               {' '}
               Play Now{' '}
             </Button>
           </Stack>
-          <Stack spacing={1}>
+          <Stack spacing={1} sx={{ m: 1 }}>
             <img
               src="/assets/dice.png"
               alt="smart-game"
@@ -98,7 +96,7 @@ const Landing = ({ isAuthenticated }) => {
               Play Now{' '}
             </Button>
           </Stack>
-          <Stack spacing={1}>
+          <Stack spacing={1} sx={{ m: 1 }}>
             <img
               src="/assets/raffle.png"
               alt="smart-game"
@@ -129,7 +127,7 @@ const Landing = ({ isAuthenticated }) => {
               Play Now{' '}
             </Button>
           </Stack>
-          <Stack spacing={1}>
+          <Stack spacing={1} sx={{ m: 1 }}>
             <img
               src="/assets/two-dice.png"
               alt="smart-game"
@@ -160,7 +158,7 @@ const Landing = ({ isAuthenticated }) => {
               Play Now{' '}
             </Button>
           </Stack>
-          <Stack spacing={1}>
+          <Stack spacing={1} sx={{ m: 1 }}>
             <img
               src="/assets/roll.png"
               alt="smart-game"

@@ -16,7 +16,7 @@ const Landing = ({ isAuthenticated }) => {
   return (
     <section className="landing">
       <div className="landing-inner">
-        <Grid container spacing={2} mt={32}>
+        <Grid container spacing={2} mt={15}>
           <Grid item xs={12} md={6}>
             {/* Winners and Total Payout */}
             <WinnersAndPayout />

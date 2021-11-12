@@ -28,8 +28,6 @@ import {
 } from '../../../utils/interact.js'
 
 const Flip = ({ isAuthenticated, login }) => {
-  const theme = useTheme()
-  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'))
   console.log('isAuthenticated:', isAuthenticated)
 
   //State variables
@@ -128,6 +126,11 @@ const Flip = ({ isAuthenticated, login }) => {
         height: '30px',
       },
     },
+    button: {
+      "&.active": {
+        background:'black',
+      },
+    },
   })
   const classes = useStyles()
 
@@ -162,7 +165,7 @@ const Flip = ({ isAuthenticated, login }) => {
             <Settings />
 
             {/* Game Logic */}
-            <Grid container spacing={2}>
+            <Grid container spacing={2} mt={1}>
               {/* Showing Win & Multiplier & Win Chance */}
               <Grid item xs={12} md={4}>
                 <Stack>
@@ -222,24 +225,31 @@ const Flip = ({ isAuthenticated, login }) => {
             <Box
               sx={{
                 my: 3,
-                width: isDesktop ? '74.5%' : '100%',
+                width: '100%',
                 background: 'rgb(34, 41, 52)',
                 borderRadius: '12px',
                 mx: 'auto',
                 p: 3,
               }}
             >
-              <Grid container spacing={10}>
+              <Grid container spacing={3}>
                 <Grid item xs={12} md={4}>
                   {/* Button Roll Under */}
                   <Stack direction="row" justifyContent="center">
                     <Button
                       variant="outlined"
                       startIcon={<SwapVertIcon />}
+                      className={classes.button}
                       sx={{
                         height: '40px',
+                        borderRadius: '40px',
                         color: 'rgb(104, 213, 215)',
                         border: '1px solid rgb(104, 213, 215)',
+                        '&:hover': {
+                          background: 'linear-gradient(102.73deg, rgb(104, 213, 215) 2.16%, rgb(25, 159, 135) 92.24%)',
+                          color: "#fff",
+                          border: 'none'
+                        }
                       }}
                     >
                       Roll under
@@ -285,8 +295,14 @@ const Flip = ({ isAuthenticated, login }) => {
                       startIcon={<SwapVertIcon />}
                       sx={{
                         height: '40px',
+                        borderRadius: '40px',
                         color: 'rgb(104, 213, 215)',
                         border: '1px solid rgb(104, 213, 215)',
+                        '&:hover': {
+                          background: 'linear-gradient(102.73deg, rgb(104, 213, 215) 2.16%, rgb(25, 159, 135) 92.24%)',
+                          color: "#fff",
+                          border: 'none'
+                        }
                       }}
                     >
                       Roll Upper
