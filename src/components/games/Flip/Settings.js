@@ -1,26 +1,30 @@
-import React, { useState } from 'react';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import Button from '@mui/material/Button';
-import { styled } from '@mui/material/styles';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import React, { useState, Fragment } from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+import { useTheme } from '@material-ui/core/styles'
+import { useMediaQuery } from '@material-ui/core'
+import Button from '@mui/material/Button'
+import { styled } from '@mui/material/styles'
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import DialogActions from '@mui/material/DialogActions'
+import IconButton from '@mui/material/IconButton'
+import Typography from '@mui/material/Typography'
 
-import { Grid } from '@mui/material';
-import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import VolumeOffIcon from '@mui/icons-material/VolumeOff';
-import StorageIcon from '@mui/icons-material/Storage';
-import CloseIcon from '@mui/icons-material/Close';
+import { Box, Stack } from '@mui/material'
+import VolumeUpIcon from '@mui/icons-material/VolumeUp'
+import VolumeOffIcon from '@mui/icons-material/VolumeOff'
+import StorageIcon from '@mui/icons-material/Storage'
+import CloseIcon from '@mui/icons-material/Close'
 
 const Setting = ({ isAuthenticated }) => {
-  console.log("isAuthenticated:", isAuthenticated)
+  const theme = useTheme()
+  const isDesktop = useMediaQuery(theme.breakpoints.up('lg'))
+  console.log('isAuthenticated:', isAuthenticated)
   // State Values
   const [mute, setMute] = useState(true)
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
 
   // Audio Action
   const setAudio = () => {
@@ -31,11 +35,11 @@ const Setting = ({ isAuthenticated }) => {
 
   // Open Modal Action
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     '& .MuiDialogContent-root': {
@@ -45,12 +49,12 @@ const Setting = ({ isAuthenticated }) => {
       padding: theme.spacing(1),
     },
     '& .MuiPaper-root': {
-      background: "-webkit-linear-gradient(-90deg, #ffda6f 30%, #e2a139 90%)"
-    }
-  }));
+      background: '-webkit-linear-gradient(-90deg, #ffda6f 30%, #e2a139 90%)',
+    },
+  }))
 
   const BootstrapDialogTitle = (props) => {
-    const { children, onClose, ...other } = props;
+    const { children, onClose, ...other } = props
 
     return (
       <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
@@ -70,27 +74,35 @@ const Setting = ({ isAuthenticated }) => {
           </IconButton>
         ) : null}
       </DialogTitle>
-    );
-  };
+    )
+  }
 
   BootstrapDialogTitle.propTypes = {
     children: PropTypes.node,
     onClose: PropTypes.func.isRequired,
-  };
+  }
 
   return (
-    <Grid container spacing={2}>
-      <Grid item container xs={12} md={12} mt={5} sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-        {/* Open Rule Modal */}
-        <IconButton onClick={handleClickOpen} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.3)', mr: 3 }}>
-          <StorageIcon />
-        </IconButton>
+    <Fragment>
+      <Stack direction="row" justifyContent={isDesktop ? 'flex-end' : 'center'}>
+        <Box mt={isDesktop ? 5 : 10}>
+          {/* Open Rule Modal */}
+          <IconButton
+            onClick={handleClickOpen}
+            sx={{ backgroundColor: 'rgba(255, 255, 255, 0.3)', mr: 3 }}
+          >
+            <StorageIcon />
+          </IconButton>
 
-        {/* Mute Audio */}
-        <IconButton onClick={setAudio} sx={{ backgroundColor: 'rgba(255, 255, 255, 0.3)', mr: 3 }}>
-          {mute ? <VolumeUpIcon /> : <VolumeOffIcon />}
-        </IconButton>
-      </Grid>
+          {/* Mute Audio */}
+          <IconButton
+            onClick={setAudio}
+            sx={{ backgroundColor: 'rgba(255, 255, 255, 0.3)' }}
+          >
+            {mute ? <VolumeUpIcon /> : <VolumeOffIcon />}
+          </IconButton>
+        </Box>
+      </Stack>
 
       {/* Dialog */}
       <BootstrapDialog
@@ -98,39 +110,49 @@ const Setting = ({ isAuthenticated }) => {
         aria-labelledby="customized-dialog-title"
         open={open}
         sx={{ width: '450px', margin: 'auto' }}
-
       >
-        <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <BootstrapDialogTitle
+          id="customized-dialog-title"
+          onClose={handleClose}
+        >
           Rules
         </BootstrapDialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            Start by setting your Bet Amount.
-            You can set Win Chance, Prediction Number and Multiplier by using the slider.
+            Start by setting your Bet Amount. You can set Win Chance, Prediction
+            Number and Multiplier by using the slider.
           </Typography>
           <Typography gutterBottom>
-            You can also adjust parameters manually by changing input values. After you are ALL set, place your bet and swipe the MONEYBUTTON to start the game.
+            You can also adjust parameters manually by changing input values.
+            After you are ALL set, place your bet and swipe the MONEYBUTTON to
+            start the game.
           </Typography>
           <Typography gutterBottom>
-            Roll starts and “one” number will be drawn from 0 to 9999. You win if the roll outcome is within the chosen area.
+            Roll starts and “one” number will be drawn from 0 to 9999. You win
+            if the roll outcome is within the chosen area.
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus variant="contained" onClick={handleClose} sx={{ borderRadius: '20px' }}>
+          <Button
+            autoFocus
+            variant="contained"
+            onClick={handleClose}
+            sx={{ borderRadius: '20px' }}
+          >
             play now
           </Button>
         </DialogActions>
       </BootstrapDialog>
-    </Grid>
-  );
-};
+    </Fragment>
+  )
+}
 
 Setting.propTypes = {
-  isAuthenticated: PropTypes.bool
-};
+  isAuthenticated: PropTypes.bool,
+}
 
-const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
-});
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+})
 
-export default connect(mapStateToProps)(Setting);
+export default connect(mapStateToProps)(Setting)
