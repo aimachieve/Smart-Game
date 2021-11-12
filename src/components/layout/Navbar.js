@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { login, logout } from '../../actions/auth';
 
-import { Box, Button, Typography } from '@material-ui/core';
+import { Button, Typography } from '@material-ui/core';
 import {
   connectWallet,
   getCurrentWalletConnected
@@ -18,9 +18,14 @@ const Navbar = ({ auth: { isAuthenticated }, login, logout }) => {
   //State variables
   const [walletAddress, setWallet] = useState("");
 
-  useEffect(async () => { //TODO: implement
-    const { address } = await getCurrentWalletConnected();
-    setWallet(address);
+  useEffect(() => {
+    async function fetchData() {
+      // You can await here
+      const { address } = await getCurrentWalletConnected();
+      setWallet(address);
+      // ...
+    }
+    fetchData();
   }, []);
 
   const connectWalletPressed = async () => { //TODO: implement
@@ -29,9 +34,9 @@ const Navbar = ({ auth: { isAuthenticated }, login, logout }) => {
 
     addWalletListener();
 
-    // if (walletResponse.success) {
-    //   login(walletResponse.address);
-    // }
+    if (walletResponse.success) {
+      login(walletResponse.address);
+    }
   };
 
   function addWalletListener() {
@@ -90,7 +95,7 @@ const Navbar = ({ auth: { isAuthenticated }, login, logout }) => {
   const guestLinks = (
     <ul>
       {walletAddress.length > 0 ?
-        <Button variant="text" style={{
+        <Button variant="text" href="/" style={{
           color: 'white',
           marginRight: '3px',
           fontSize: '86',
@@ -100,7 +105,7 @@ const Navbar = ({ auth: { isAuthenticated }, login, logout }) => {
         }}>
           Games
         </Button> :
-        <Button variant="text" style={{
+        <Button variant="text" href="/" style={{
           color: 'white',
           marginRight: '3px',
           fontSize: '86',
@@ -121,7 +126,7 @@ const Navbar = ({ auth: { isAuthenticated }, login, logout }) => {
         fontFamily: 'Helvetica-Bold,AdobeInvisFont,MyriadPro-Regular',
         width: {}
       }}>
-        {walletAddress.length > 0 ? (
+        {isAuthenticated || walletAddress.length > 0 ? (
           "Connected: " +
           String(walletAddress).substring(0, 6) +
           "..." +

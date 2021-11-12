@@ -1,24 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { login } from '../../../actions/auth';
 
 import { Box, Grid, Stack, Typography, Button, TextField } from '@mui/material';
 import { withStyles } from '@material-ui/styles';
-
+import CasinoIcon from '@mui/icons-material/Casino';
 import Settings from './Settings'
 import { makeStyles } from '@material-ui/core';
 
-const Flip = ({ isAuthenticated }) => {
+import {
+	connectWallet,
+	getCurrentWalletConnected
+} from "../../../utils/interact.js";
+
+import WinLoseModal from './WinLoseModal'
+
+const Flip = ({ isAuthenticated, login }) => {
 	console.log("isAuthenticated:", isAuthenticated)
-	const [bet, setBet] = useState(0.05)
+
+	//State variables
+	const [walletAddress, setWallet] = useState("");
+	const [selected, setSelected] = useState('HEADS')
+	const [betType, setBetType] = useState('HEADS')
+	const [betAmount, setBetAmount] = useState(0.05)
+	const [isWin, setIsWin] = useState("")
+	const [open, setOpen] = React.useState(false);
+
+	useEffect(() => {
+		async function fetchData() {
+			// You can await here
+			const { address } = await getCurrentWalletConnected();
+			setWallet(address);
+			// ...
+		}
+		fetchData();
+	}, []);
+
+	// Connect Wallet
+	const connectWalletPressed = async () => { //TODO: implement
+		const walletResponse = await connectWallet();
+		setWallet(walletResponse.address);
+
+		addWalletListener();
+
+		if (walletResponse.success) {
+			login(walletResponse.address);
+		}
+	};
+	function addWalletListener() {
+		if (window.ethereum) {
+			window.ethereum.on("accountsChanged", (accounts) => {
+				if (accounts.length > 0) {
+					setWallet(accounts[0]);
+				} else {
+					setWallet("");
+				}
+			});
+		} else {
+			// setStatus(
+			//   <p>
+			//     {" "}
+			//     🦊{" "}
+			//     <a href={`https://metamask.io/download.html`}>
+			//       You must install Metamask, a virtual Ethereum wallet, in your
+			//       browser.
+			//     </a>
+			//   </p>
+			// );
+		}
+	}
+
+	// Set Heads or Tails
+	const headsSelected = () => {
+		setSelected('HEADS')
+	}
+	const tailsSelected = () => {
+		setSelected('TAILS')
+	}
+
+
+	// Set Bet Amount
 	const handleChange = (event) => {
-		setBet(event.target.value)
+		setBetAmount(event.target.value)
 	}
 
+	// Set Bet Min Value
 	const setMinValue = () => {
-		setBet(0.05)
+		setBetAmount(0.05)
 	}
-
 	const MinButton = () => (
 		<Button
 			onClick={setMinValue}
@@ -31,6 +101,7 @@ const Flip = ({ isAuthenticated }) => {
 		</Button>
 	);
 
+	// Custom color For Heads and Tails
 	const HeadColor = withStyles({
 		root: {
 			fontSize: '20px !important',
@@ -53,6 +124,7 @@ const Flip = ({ isAuthenticated }) => {
 		}
 	})(Typography);
 
+	// Set TextField's Color
 	const useStyles = makeStyles({
 		root: {
 			"& .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline": {
@@ -64,10 +136,40 @@ const Flip = ({ isAuthenticated }) => {
 			width: '400px'
 		}
 	})
-
 	const classes = useStyles()
 
+	// onClick Bet Button
+	const startBet = () => {
+		let currentType = '';
+		if (Math.random() <= 0.5) {
+			setBetType('HEADS')
+			currentType = 'HEADS'
+		}
+		else {
+			setBetType('TAILS')
+			currentType = 'TAILS'
+		}
 
+		if (selected === currentType) {
+			setIsWin(1)
+			console.log('win')
+		} else {
+			setIsWin(0)
+			console.log('lose')
+		}
+		handleClickOpen()
+	}
+
+	// Open and Close Win/Lose Modal
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = (value) => {
+		setOpen(false);
+	};
+
+	//Start Rendering 
 	return (
 		<section className='landing'>
 			<div className='dark-overlay'>
@@ -85,12 +187,13 @@ const Flip = ({ isAuthenticated }) => {
 						{/* Game Logic */}
 						<Grid container spacing={2}>
 							{/* Set Coin Head or Tail */}
-							<Grid item container sx={12} md={12} style={{ display: 'flex', justifyContent: 'center' }}>
-								<Stack spacing={10} direction="row" mt={10}>
+							<Grid item container xs={12} md={12} style={{ display: 'flex', justifyContent: 'center' }}>
+								<Stack spacing={10} direction="row" mt={6}>
+									{/* Select Heads Button */}
 									<Stack>
-										<Button sx={{
+										<Button onClick={headsSelected} sx={{
 											borderRadius: '12px',
-											background: 'linear-gradient(rgb(255, 230, 105) 15%, rgb(255, 140, 100) 46%, rgb(255, 100, 100) 67%)'
+											background: selected === 'HEADS' ? 'linear-gradient(rgb(255, 230, 105) 15%, rgb(255, 140, 100) 46%, rgb(255, 100, 100) 67%)' : ''
 										}}>
 											<Stack sx={{
 												borderRadius: '10px',
@@ -103,13 +206,29 @@ const Flip = ({ isAuthenticated }) => {
 											</Stack>
 										</Button>
 									</Stack>
+
+									{/* Displaying Coin */}
 									<Stack>
-										<img src="/assets/coin_head.png" alt=".." style={{ height: '190px' }} />
+										<div id="coin" className={betType}>
+											<div className="side-a">
+												<img src="/assets/coin_tail.png" alt=".." style={{ height: '190px' }} />
+											</div>
+											<div className="side-b">
+												<img src="/assets/coin_head.png" alt=".." style={{ height: '190px' }} />
+											</div>
+										</div>
+										<WinLoseModal
+											open={open}
+											onClose={handleClose}
+											isWin={isWin}
+										/>
 									</Stack>
+
+									{/* Select Tails Button */}
 									<Stack>
-										<Button sx={{
+										<Button onClick={tailsSelected} sx={{
 											borderRadius: '12px',
-											background: 'linear-gradient(rgb(21, 241, 178) 15%, rgb(32, 226, 184) 46%, rgb(62, 186, 199) 60%, rgb(110, 123, 223) 100%, rgb(149, 71, 243) 100%)'
+											background: selected === 'TAILS' ? 'linear-gradient(rgb(21, 241, 178) 15%, rgb(32, 226, 184) 46%, rgb(62, 186, 199) 60%, rgb(110, 123, 223) 100%, rgb(149, 71, 243) 100%)' : ''
 										}}>
 											<Stack sx={{
 												borderRadius: '10px',
@@ -126,13 +245,13 @@ const Flip = ({ isAuthenticated }) => {
 							</Grid>
 
 							{/* Set Bet Amount */}
-							<Grid item container sx={12} md={12} style={{ display: 'flex', justifyContent: 'center' }}>
+							<Grid item container xs={12} md={12} style={{ display: 'flex', justifyContent: 'center' }}>
 								<Stack>
 									<Typography sx={{ color: '#fff', mb: 2 }}>Bet Amount</Typography>
 									<TextField
 										id="bet-amount"
 										type="number"
-										value={bet}
+										value={betAmount}
 										className={classes.root}
 										onChange={handleChange}
 										InputProps={{ endAdornment: <MinButton /> }}
@@ -141,21 +260,31 @@ const Flip = ({ isAuthenticated }) => {
 							</Grid>
 
 							{/* Connect Wallet and Start Betting */}
-							<Grid item container sx={12} md={12} style={{ display: 'flex', justifyContent: 'center' }}>
-								<Button variant="contained" size="large" sx={{
-									width: '300px',
-									height: 54,
-									mt: 3,
-									borderRadius: '10px',
-									fontWight: 'bold',
-									background: 'linear-gradient(90deg , #dc2424 15%, #4a569d 80%)'
-								}}> CONNECT </Button>
+							<Grid item container xs={12} md={12} style={{ display: 'flex', justifyContent: 'center' }}>
+								{walletAddress.length > 0 || isAuthenticated ?
+									<Button onClick={startBet} variant="contained" size="large" startIcon={<CasinoIcon />} sx={{
+										width: '300px',
+										height: 54,
+										mt: 3,
+										borderRadius: '10px',
+										fontWight: 'bold',
+										background: 'linear-gradient(90deg , #dc2424 15%, #4a569d 80%)',
+									}}> Bet {selected} </Button> :
+									<Button variant="contained" size="large" onClick={connectWalletPressed} sx={{
+										width: '300px',
+										height: 54,
+										mt: 3,
+										borderRadius: '10px',
+										fontWight: 'bold',
+										background: 'linear-gradient(90deg , #dc2424 15%, #4a569d 80%)'
+									}}> CONNECT </Button>
+								}
 							</Grid>
 						</Grid>
 					</Box>
 				</div>
 			</div>
-		</section>
+		</section >
 	);
 };
 
@@ -164,7 +293,8 @@ Flip.propTypes = {
 };
 
 const mapStateToProps = state => ({
-	isAuthenticated: state.auth.isAuthenticated
+	isAuthenticated: state.auth.isAuthenticated,
+	auth: state.auth
 });
 
-export default connect(mapStateToProps)(Flip);
+export default connect(mapStateToProps, { login })(Flip);
