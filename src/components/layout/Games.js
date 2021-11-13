@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import { Grid, Typography, Stack, Button } from '@mui/material'
+import { Typography, Stack, Button } from '@mui/material'
 import { Container, useMediaQuery } from '@material-ui/core'
 import { useTheme } from '@material-ui/core/styles'
 

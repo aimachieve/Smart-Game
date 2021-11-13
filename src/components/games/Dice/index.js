@@ -19,8 +19,6 @@ import { makeStyles } from '@material-ui/core'
 import { styled } from '@mui/material/styles'
 import SyncAltIcon from '@mui/icons-material/SyncAlt'
 import UnfoldMoreIcon from '@mui/icons-material/UnfoldMore'
-import { useTheme } from '@material-ui/core/styles'
-import { useMediaQuery } from '@material-ui/core'
 
 import {
   connectWallet,
@@ -34,7 +32,6 @@ const Flip = ({ isAuthenticated, login }) => {
   const [walletAddress, setWallet] = useState('')
   const [betAmount, setBetAmount] = useState(0.05)
   const [value, setValue] = useState(5)
-  const [isWin, setIsWin] = useState('')
 
   useEffect(() => {
     async function fetchData() {
