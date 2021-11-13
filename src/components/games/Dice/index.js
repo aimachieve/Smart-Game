@@ -33,6 +33,7 @@ const Flip = ({ isAuthenticated, login }) => {
   //State variables
   const [walletAddress, setWallet] = useState('')
   const [betAmount, setBetAmount] = useState(0.05)
+  const [value, setValue] = useState(5)
   const [isWin, setIsWin] = useState('')
 
   useEffect(() => {
@@ -100,6 +101,16 @@ const Flip = ({ isAuthenticated, login }) => {
       Min
     </Button>
   )
+
+  // Set slider change value
+  const sliderChange = (event, newValue) => {
+    setValue(newValue)
+  }
+
+  // Input slider value
+  const affectToSlider = (e) => {
+    setValue(e.target.value)
+  }
 
   // Set TextField's Color
   const useStyles = makeStyles({
@@ -174,11 +185,10 @@ const Flip = ({ isAuthenticated, login }) => {
                   </Typography>
                   <TextField
                     id="bet-amount"
-                    value={betAmount}
+                    value={value}
                     className={classes.root}
-                    onChange={handleChange}
+                    onChange={affectToSlider}
                     InputProps={{
-                      readOnly: true,
                       endAdornment: <SyncAltIcon />,
                     }}
                   />
@@ -276,12 +286,14 @@ const Flip = ({ isAuthenticated, login }) => {
                         sx={{
                           background:
                             'linear-gradient(153.84deg, rgb(21, 241, 178) 8.53%, rgb(32, 226, 184) 19.97%, rgb(62, 186, 199) 42.01%, rgb(110, 123, 223) 72.14%, rgb(149, 71, 243) 94.85%)',
-                          padding: '8px',
+                          padding: '5px',
                           width: '150px',
                           borderRadius: '40px',
+                          fontWeight: 'bold',
+                          fontSize: '20px',
                         }}
                       >
-                        1234
+                        {value}
                       </Box>
                     </Button>
                   </Stack>
@@ -317,6 +329,10 @@ const Flip = ({ isAuthenticated, login }) => {
                 defaultValue={5}
                 aria-label="Small"
                 valueLabelDisplay="auto"
+                step={0.1}
+                marks
+                value={value}
+                onChange={sliderChange}
               />
             </Box>
 
@@ -371,6 +387,7 @@ const Flip = ({ isAuthenticated, login }) => {
                     width: '300px',
                     height: 54,
                     mt: 3,
+                    mb: 3,
                     borderRadius: '10px',
                     fontWight: 'bold',
                     background:
@@ -393,6 +410,7 @@ const Flip = ({ isAuthenticated, login }) => {
                     width: '300px',
                     height: 54,
                     mt: 3,
+                    mb: 3,
                     borderRadius: '10px',
                     fontWight: 'bold',
                     // linear-gradient(90deg , #dc2424 15%, #4a569d 80%)
