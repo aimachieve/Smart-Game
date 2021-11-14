@@ -32,6 +32,8 @@ const Flip = ({ isAuthenticated, login }) => {
   const [walletAddress, setWallet] = useState('')
   const [betAmount, setBetAmount] = useState(0.05)
   const [value, setValue] = useState(5)
+  const [track, setTrack] = useState("normal")
+  const [betChance, setBetChance] = useState(5)
 
   useEffect(() => {
     async function fetchData() {
@@ -101,12 +103,36 @@ const Flip = ({ isAuthenticated, login }) => {
 
   // Set slider change value
   const sliderChange = (event, newValue) => {
-    setValue(newValue)
+    let v_value
+    if (newValue < 5) {
+      // setValue(5)
+      v_value = 5
+    } else if (newValue > 98) {
+      // setValue(98)
+      v_value = 98
+    } else {
+      v_value = newValue
+    }
+    
+    setValue(v_value)
+    setBetChance(track === "normal" ? (v_value + ' %') : (100 - v_value) + " %")
   }
 
   // Input slider value
   const affectToSlider = (e) => {
-    setValue(e.target.value)
+    let v_value
+    if (e.target.value < 5) {
+      // setValue(5)
+      v_value = 5
+    } else if (e.target.value > 98) {
+      // setValue(98)
+      v_value = 98
+    } else {
+      v_value = e.target.value
+    }
+
+    setValue(v_value)
+    setBetChance(track === "normal" ? (v_value + ' %') : (100 - v_value) + " %")
   }
 
   // Set TextField's Color
@@ -155,6 +181,14 @@ const Flip = ({ isAuthenticated, login }) => {
     alert('started bet')
   }
 
+  // Bet direction
+  const setBetDirection = (e) => {
+    // setTrack(status)
+    console.log(e.target.id)
+    setTrack(e.target.id)
+    setBetChance(e.target.id === "normal" ? (value + ' %') : (100 - value) + " %")
+  }
+
   //Start Rendering
   return (
     <section className="landing">
@@ -183,6 +217,7 @@ const Flip = ({ isAuthenticated, login }) => {
                   <TextField
                     id="bet-amount"
                     value={value}
+                    type="number"
                     className={classes.root}
                     onChange={affectToSlider}
                     InputProps={{
@@ -216,7 +251,7 @@ const Flip = ({ isAuthenticated, login }) => {
                   </Typography>
                   <TextField
                     id="bet-amount"
-                    value={betAmount}
+                    value={betChance}
                     className={classes.root}
                     onChange={handleChange}
                     InputProps={{
@@ -247,16 +282,21 @@ const Flip = ({ isAuthenticated, login }) => {
                       variant="outlined"
                       startIcon={<SwapVertIcon />}
                       className={classes.button}
+                      id="normal"
+                      onClick={setBetDirection}
                       sx={{
                         height: '40px',
                         borderRadius: '40px',
-                        color: 'rgb(104, 213, 215)',
+                        color: track === "normal" ? 'white' : 'rgb(104, 213, 215)',
                         border: '1px solid rgb(104, 213, 215)',
                         '&:hover': {
                           background: 'linear-gradient(102.73deg, rgb(104, 213, 215) 2.16%, rgb(25, 159, 135) 92.24%)',
                           color: "#fff",
                           border: 'none'
-                        }
+                        },
+                        background: track === "normal" ? 
+                          'linear-gradient(102.73deg, rgb(104, 213, 215) 2.16%, rgb(25, 159, 135) 92.24%)' : 
+                          ""
                       }}
                     >
                       Roll under
@@ -302,16 +342,21 @@ const Flip = ({ isAuthenticated, login }) => {
                     <Button
                       variant="outlined"
                       startIcon={<SwapVertIcon />}
+                      id="inverted"
+                      onClick={setBetDirection}
                       sx={{
                         height: '40px',
                         borderRadius: '40px',
-                        color: 'rgb(104, 213, 215)',
+                        color: track === "inverted" ? 'white' : 'rgb(104, 213, 215)',
                         border: '1px solid rgb(104, 213, 215)',
                         '&:hover': {
                           background: 'linear-gradient(102.73deg, rgb(104, 213, 215) 2.16%, rgb(25, 159, 135) 92.24%)',
                           color: "#fff",
                           border: 'none'
-                        }
+                        },
+                        background: track === "inverted" ? 
+                          'linear-gradient(102.73deg, rgb(104, 213, 215) 2.16%, rgb(25, 159, 135) 92.24%)' : 
+                          ""
                       }}
                     >
                       Roll Upper
@@ -322,14 +367,14 @@ const Flip = ({ isAuthenticated, login }) => {
 
               <CustomizedSlider
                 className={classes.slider}
-                size="large"
                 defaultValue={5}
                 aria-label="Small"
                 valueLabelDisplay="auto"
-                step={0.1}
-                marks
+                step={0.01}
+                // marks
                 value={value}
                 onChange={sliderChange}
+                track={track}
               />
             </Box>
 
@@ -360,7 +405,7 @@ const Flip = ({ isAuthenticated, login }) => {
                     id="bet-amount"
                     type="number"
                     value={betAmount}
-                    readonly
+                    readOnly
                     InputProps={{ readOnly: true, endAdornment: 'BNB' }}
                     sx={{
                       border: 'solid 3px',

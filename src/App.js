@@ -4,7 +4,10 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import './App.css'
 import Navbar from './components/layout/Navbar'
 import Landing from './components/layout/Landing'
-import Routes from './components/routing/Routes'
+import Flip from './components/games/Flip/index.js';
+import Dice from './components/games/Dice/index.js';
+import NotFound from './components/layout/NotFound';
+// import Routes from './components/routing/Routes'
 import { LOGOUT } from './actions/types'
 
 // Redux
@@ -33,7 +36,10 @@ const App = () => {
           <Navbar />
           <Switch>
             <Route exact path="/" component={Landing} />
-            <Route component={Routes} />
+            <Route exact path="/flip" component={Flip} />
+            <Route exact path="/dice" component={Dice} />
+            <Route component={NotFound} />
+            {/* <Route component={Routes} /> */}
           </Switch>
         </Fragment>
       </Router>
