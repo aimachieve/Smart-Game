@@ -382,7 +382,7 @@ const Flip = ({ isAuthenticated, login }) => {
                       }
                     }}
                   >
-                    {' '}
+                    🦊
                     CONNECT{' '}
                   </Button>
                 )}

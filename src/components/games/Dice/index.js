@@ -34,6 +34,7 @@ const Flip = ({ isAuthenticated, login }) => {
   const [value, setValue] = useState(5)
   const [track, setTrack] = useState("normal")
   const [betChance, setBetChance] = useState(5)
+  const [multiplier, setMultiplier] = useState(19.8)
 
   useEffect(() => {
     async function fetchData() {
@@ -115,7 +116,9 @@ const Flip = ({ isAuthenticated, login }) => {
     }
     
     setValue(v_value)
-    setBetChance(track === "normal" ? (v_value + ' %') : (100 - v_value) + " %")
+    setBetChance(track === "normal" ? v_value : 100 - v_value)
+    // Roll Under: Rough Function, Roll Upper: ____ function
+    setMultiplier((99/v_value).toFixed(4))
   }
 
   // Input slider value
@@ -132,7 +135,7 @@ const Flip = ({ isAuthenticated, login }) => {
     }
 
     setValue(v_value)
-    setBetChance(track === "normal" ? (v_value + ' %') : (100 - v_value) + " %")
+    setBetChance(track === "normal" ? v_value : 100 - v_value)
   }
 
   // Set TextField's Color
@@ -233,7 +236,7 @@ const Flip = ({ isAuthenticated, login }) => {
                   </Typography>
                   <TextField
                     id="bet-amount"
-                    value={betAmount}
+                    value={'x ' + multiplier}
                     className={classes.root}
                     onChange={handleChange}
                     InputProps={{
@@ -251,7 +254,7 @@ const Flip = ({ isAuthenticated, login }) => {
                   </Typography>
                   <TextField
                     id="bet-amount"
-                    value={betChance}
+                    value={betChance + ' %'}
                     className={classes.root}
                     onChange={handleChange}
                     InputProps={{
@@ -404,7 +407,7 @@ const Flip = ({ isAuthenticated, login }) => {
                   <TextField
                     id="bet-amount"
                     type="number"
-                    value={betAmount}
+                    value={(betAmount * multiplier).toFixed(4)}
                     readOnly
                     InputProps={{ readOnly: true, endAdornment: 'BNB' }}
                     sx={{
@@ -460,7 +463,7 @@ const Flip = ({ isAuthenticated, login }) => {
                       'linear-gradient(95.32deg, rgb(129, 86, 218) 2.68%, rgb(89, 41, 137) 84.52%)',
                   }}
                 >
-                  {' '}
+                  🦊
                   CONNECT{' '}
                 </Button>
               )}

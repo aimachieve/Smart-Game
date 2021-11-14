@@ -98,7 +98,7 @@ const Navbar = ({ auth: { isAuthenticated }, login, logout }) => {
           '...' +
           String(walletAddress).substring(38)
         ) : (
-          <span>Connect Wallet</span>
+          <span>🦊 Connect Wallet</span>
         )}
       </Button>
     </ul>
@@ -157,7 +157,7 @@ const Navbar = ({ auth: { isAuthenticated }, login, logout }) => {
           '...' +
           String(walletAddress).substring(38)
         ) : (
-          <span>Connect Wallet</span>
+          <span>🦊 Connect Wallet</span>
         )}
       </Button>
     </ul>
